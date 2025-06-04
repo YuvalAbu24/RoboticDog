@@ -1,0 +1,74 @@
+function [q_table, pos_table] = generateArcLegGaitTable_v2(leg, chunk_deg, stride_length, ...
+                                                            step_height, steps_per_cycle, ...
+                                                            phase_offset, pivot_distance, ...
+                                                            turning_side)
+% Generates arc foot trajectory for a single leg (in body frame).
+%
+% Inputs:
+%   leg              - RoboticLeg object
+%   chunk_deg        - Angle chunk for this gait arc (deg)
+%   stride_length    - Approximate stride length (used for z swing)
+%   step_height      - Z lift height (mm)
+%   steps_per_cycle  - Resolution of gait
+%   phase_offset     - Gait phase offset [0, 1)
+%   pivot_distance   - Distance from body center to pivot (Y-direction)
+%   turning_side     - 'left' or 'right'
+%
+% Outputs:
+%   q_table          - [steps x 4] joint angle table
+%   pos_table        - [steps x 3] foot trajectory (relative to body)
+
+    sign_dir = strcmp(turning_side, 'left') * 2 - 1;  % +1 for left, -1 for right
+
+    % --- Standing position (in body frame) ---
+    foot0_body = leg.poses.standing.footPos(1:2);  % XY only
+    z_base = leg.poses.standing.footPos(3);
+
+    % --- Pivot in body frame ---
+    pivot = [0; sign_dir * pivot_distance];
+
+    % --- Radius and relative vector in pivot frame ---
+    vec_pivot = foot0_body - pivot;
+    R_leg = norm(vec_pivot);
+    theta0 = atan2(vec_pivot(2), vec_pivot(1));
+
+    % --- Arc sweep ---
+    theta_xfinal = theta0 + sign_dir * deg2rad(chunk_deg);
+    theta_vec = linspace(theta0, theta_final, steps_per_cycle);
+
+    % --- Trajectory in pivot frame ---
+    x_pivot = R_leg * cos(theta_vec);
+    y_pivot = R_leg * sin(theta_vec);
+
+    % --- Transform back to body frame ---
+    x_body = x_pivot + pivot(1);
+    y_body = y_pivot + pivot(2);
+
+    % --- Z trajectory (swing/stance) ---
+    z_traj = zeros(1, steps_per_cycle);
+    for i = 1:steps_per_cycle
+        phase = mod((i-1)/steps_per_cycle + phase_offset, 1.0);
+        if phase < 0.5  % swing
+            swing_phase = phase * 2;
+            z_traj(i) = z_base + step_height * sin(pi * swing_phase);
+        else  % stance
+            z_traj(i) = z_base;
+        end
+    end
+
+    % --- Final assembly and IK ---
+    q_table = zeros(steps_per_cycle, 4);
+    pos_table = zeros(steps_per_cycle, 3);
+    for i = 1:steps_per_cycle
+        pos_body = [x_body(i); y_body(i); z_traj(i)];
+        try
+            q = leg.ik(pos_body);
+        catch
+            warning("IK failed for leg %s at pos = [%.1f, %.1f, %.1f]", ...
+                leg.name, pos_body(1), pos_body(2), pos_body(3));
+            q = nan(1,4);
+        end
+        q_table(i, :) = q;
+        pos_table(i, :) = pos_body';
+    end
+end
