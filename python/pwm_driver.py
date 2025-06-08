@@ -14,7 +14,7 @@ class PWMDriver:
     def set_pwm_batch(self, pwm_values):
         """
         Send a list of 12 PWM values to servos (in microseconds).
-        :param pwm_values: list of 12 values (range 450–2450)
+        :param pwm_values: list of 12 values (range 450 – 2450)
         """
         if len(pwm_values) != 12:
             raise ValueError("Expected 12 PWM values.")
