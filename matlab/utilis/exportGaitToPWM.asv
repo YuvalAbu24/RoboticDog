@@ -19,7 +19,7 @@ function exportGaitToPWM(gait, filename)
 
     % === Step 3: Per-joint offset (calibration to real robot) ===
     offsets = [...
-        0, 90, -90,  ... LF1, LF2, LF3
+        0, 0, 90,  ... LF1, LF2, LF3
         90, 90, 90,  ... RF1, RF2, RF3
         90, 90, 90,  ... LH1, LH2, LH3
         90, 90, 90]; ... RH1, RH2, RH3

@@ -9,7 +9,7 @@ GAIT_FILE = 'python/gaits/walk_pwm.csv'
 REPEAT = True  # Set to False to play only once
 
 def wait_for_trigger():
-    print("🔌 Waiting for trigger (normally closed switch)...")
+    print(" Waiting for trigger (normally closed switch)...")
     while GPIO.input(SWITCH_PIN) == GPIO.LOW:
         time.sleep(0.01)
     print(" Switch triggered — starting gait!\n")
@@ -27,7 +27,7 @@ def main():
         print("\n Interrupted by user.")
     finally:
         GPIO.cleanup()
-        print("🧼 GPIO cleaned up.")
+        print(" GPIO cleaned up.")
 
 if __name__ == '__main__':
     main()

@@ -70,7 +70,7 @@ function gait = generateCurvedWalkingGait_Option1(robot, turn_direction, ...
         end
     end
 
-    disp("✅ Curved walking gait (Option 1) generated:");
+    disp("Curved walking gait (Option 1) generated:");
     disp("→ Turn direction: " + turn_direction);
     disp("→ Total angle: " + total_angle_deg + " deg");
     disp("→ Chunks: " + n_chunks);
