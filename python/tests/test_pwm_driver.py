@@ -11,11 +11,11 @@ try:
     time.sleep(2)
 
     print("Sending max pose (2450 µs)...")
-    driver.set_pwm_batch([2450] * 12)
+    driver.set_pwm_batch([2500] * 12)
     time.sleep(2)
 
     print("Sending min pose (450 µs)...")
-    driver.set_pwm_batch([450] * 12)
+    driver.set_pwm_batch([500] * 12)
     time.sleep(2)
 
 except KeyboardInterrupt:

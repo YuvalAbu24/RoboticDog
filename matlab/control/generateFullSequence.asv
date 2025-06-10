@@ -1,0 +1,73 @@
+
+% File: generateFullSequence.m
+
+% GENERATE GAIT:  lying → [5s delay] → sitting → [5s] → standing → enter gait →
+% walk 2m → [5s] → curved walk 180° → [5s] → walk 2m →
+% exit gait → [5s] → sit → [5s] → lie → [5s]
+
+
+clear; clc;
+robot = QuadrupedRobot();
+
+% === Parameters ===
+% delay_ms = 5000;
+% step_delay_ms = 20;  % exportGaitToPWM uses at least 20ms per row
+stride = 80; step_height = 30;
+
+% === Part 1: Transitions ===
+gait_pose = struct();
+poses = ["lying", "sitting", "standing"];
+gait_pose_seq = runPoseSequence(robot, poses, 6, 20, false);  % returns gait struct
+
+% gait_pose_seq = appendHold(gait_pose_seq);
+
+% === Part 2: Enter Gait ===
+gait_enter = enterGait(robot, 2, 20);  % returns gait struct
+% gait_enter = appendHold(gait_enter);
+
+% === Part 3: Walk Forward 2m ===
+gait_walk1 = walkFixedDistance(robot, 'trot', stride, step_height, 2000, 40);
+% gait_walk1 = appendHold(gait_walk1, delay_ms, step_delay_ms);
+
+% === Part 4: Turn 180 (curved) ===
+pivotDist = 400;
+total_deg = 180;
+chunk_deg = 5;
+
+gait_turn = generateCurvedWalkingGait_Option2_bodyBased(robot, pivotDist, ...
+              total_deg, chunk_deg, stride, step_height, 'left', 30);
+% gait_turn = appendHold(gait_turn, delay_ms, step_delay_ms);
+%==== enter ====
+gait_enter1 = enterGait(robot, 2, 20);
+
+% === Part 5: Walk Forward Again 2m ===
+gait_walk2 = walkFixedDistance(robot, 'trot', stride, step_height, 2000, 40);
+% gait_walk2 = appendHold(gait_walk2, delay_ms, step_delay_ms);
+
+% === Part 6: Exit → Standing Pose
+gait_exit = exitGait(robot, 2, 20);
+% gait_exit = appendHold(gait_exit, delay_ms, step_delay_ms);
+
+% === Part 7: Standing → Sitting → Lying
+gait_pose_end = runPoseSequence(robot, ["standing", "sitting", "lying"], 6, 20, false);
+% gait_pose_end = appendHold(gait_pose_end, delay_ms, step_delay_ms);
+
+% === Combine Everything ===
+gait_total = struct();
+legs = fieldnames(robot.legs);
+for i = 1:numel(legs)
+    leg = legs{i};
+    gait_total.(leg) = [ ...
+        gait_pose_seq.(leg);
+        gait_enter.(leg);
+        gait_walk1.(leg);
+        gait_turn.(leg);
+        gait_enter1.(leg);
+        gait_walk2.(leg);
+        gait_exit.(leg);
+        gait_pose_end.(leg)
+    ];
+end
+
+% === Export CSV ===
+exportGaitToPWM(gait_total, 'full_mission_sequence.csv');

@@ -1,4 +1,4 @@
-function exitGait(robot, duration, fps)
+function gait_exit = exitGait(robot, duration, fps)
     if nargin < 3
         fps = 30;
     end
@@ -27,12 +27,19 @@ function exitGait(robot, duration, fps)
     xlim([-200 200]); ylim([-200 200]); zlim([-250 -50]);
     title('Gait Exit → Standing');
 
+    % Animate and collect gait
+    gait_exit = struct();
+    for i = 1:numel(legs)
+        gait_exit.(legs{i}) = zeros(steps, 4);
+    end
+
     for s = 1:steps
-        cla;  % Clear axes (not figure)
+        cla;
         for i = 1:numel(legs)
             leg_id = legs{i};
             leg = robot.legs.(leg_id);
             q = q_traj.(leg_id)(s, :);
+            gait_exit.(leg_id)(s, :) = q;
             leg.robot.plot(q, 'delay', 0, 'noname'); hold on;
         end
         drawnow;

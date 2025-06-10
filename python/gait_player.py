@@ -15,7 +15,7 @@ class GaitPlayer:
             reader = csv.reader(f)
             pwm_rows = [list(map(int, row)) for row in reader]
 
-        print(f"🔁 Playing gait from {csv_path} with {len(pwm_rows)} steps")
+        print(f" Playing gait from {csv_path} with {len(pwm_rows)} steps")
 
         try:
             while True:

@@ -1,0 +1,6 @@
+from adafruit_servokit import ServoKit
+kit= ServoKit(channels=16, address=0x41)
+for ch in range(2):
+    kit.servo[ch].set_pulse_width_range(min_pulse=500, max_pulse=2500)
+kit.servo[ch].angle = 90
+print(f"channel {ch}: angle= {kit.servo[ch].angle}")  # Print the angle for verification

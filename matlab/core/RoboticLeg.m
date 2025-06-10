@@ -10,6 +10,7 @@ classdef RoboticLeg
         T_symbolic
         neutralPos  % [x, y, z] in body frame- standing pos
         poses; % pre defined positions
+        q_current;
 
     end
 
@@ -126,6 +127,8 @@ classdef RoboticLeg
             end
 
             [q, branches] = obj.selectBranch(branches_all, pos, branch_id);
+            % ---- NEW: record current angles whenever ik is called ----
+             obj.q_current = q;
         end
 
 

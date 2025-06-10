@@ -1,4 +1,5 @@
-function walkFixedDistance(robot, gait_type, stride, step_height, distance_mm, fps)
+function gait_full = walkFixedDistance(robot, gait_type, stride, step_height, distance_mm, fps)
+    %=== Defaults ===
     if nargin < 6
         fps = 30;
     end
@@ -22,32 +23,33 @@ function walkFixedDistance(robot, gait_type, stride, step_height, distance_mm, f
         gait_full.(leg_id) = repmat(gait_single.(leg_id), n_cycles, 1);
     end
 
-    % === Animation ===
-    fig = figure('Name', 'Fixed Distance Gait');
-    axis equal; grid on;
-    xlabel('X'); ylabel('Y'); zlabel('Z');
-    view([-30, 20]);
-    xlim([-200, 200]); ylim([-200, 200]); zlim([-250, -100]);
-    title(sprintf('Walk Forward: %.2f m (%s gait)', distance_mm/1000, gait_type));
+    %=== Animation (suppressed) ===
+%    fig = figure('Name', 'Fixed Distance Gait');
+%    axis equal; grid on;
+%    xlabel('X'); ylabel('Y'); zlabel('Z');
+%    view([-30, 20]);
+%    xlim([-200, 200]); ylim([-200, 200]); zlim([-250, -100]);
+%    title(sprintf('Walk Forward: %.2f m (%s gait)', distance_mm/1000, gait_type));
+%
+%    for i = 1:total_steps
+%        clf;
+%        axis equal; grid on;
+%        xlabel('X'); ylabel('Y'); zlabel('Z');
+%        view([-30, 20]);
+%        xlim([-200, 200]); ylim([-200, 200]); zlim([-250, -100]);
+%        title(sprintf('Step %d / %d', i, total_steps));
+%
+%        for j = 1:numel(leg_ids)
+%            leg_id = leg_ids{j};
+%            leg = robot.legs.(leg_id);
+%            q = gait_full.(leg_id)(i, :);
+%            leg.robot.plot(q, 'delay', 0); hold on;
+%        end
+%
+%        drawnow;
+%        pause(1/fps);
+%    end
 
-    for i = 1:total_steps
-        clf;
-        axis equal; grid on;
-        xlabel('X'); ylabel('Y'); zlabel('Z');
-        view([-30, 20]);
-        xlim([-200, 200]); ylim([-200, 200]); zlim([-250, -100]);
-        title(sprintf('Step %d / %d', i, total_steps));
-
-        for j = 1:numel(leg_ids)
-            leg_id = leg_ids{j};
-            leg = robot.legs.(leg_id);
-            q = gait_full.(leg_id)(i, :);
-            leg.robot.plot(q, 'delay', 0); hold on;
-        end
-
-        drawnow;
-        pause(1/fps);
-    end
-
-    disp(" Finished walking " + distance_mm + " mm using '" + gait_type + "' gait.");
+    % Final message
+    disp("Finished walking " + distance_mm + " mm using '" + gait_type + "' gait.");
 end

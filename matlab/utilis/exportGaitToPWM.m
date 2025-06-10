@@ -19,10 +19,10 @@ function exportGaitToPWM(gait, filename)
 
     % === Step 3: Per-joint offset (calibration to real robot) ===
     offsets = [...
-        0, 90, -90,  ... LF1, LF2, LF3
-        90, 90, 90,  ... RF1, RF2, RF3
-        90, 90, 90,  ... LH1, LH2, LH3
-        90, 90, 90]; ... RH1, RH2, RH3
+        0, 90, -180,  ... LF1, LF2, LF3
+        0, 0, 0,  ... RF1, RF2, RF3
+        0, 0, 0,  ... LH1, LH2, LH3
+        0, 0, 0]; ... RH1, RH2, RH3
 
     joint_deg = joint_deg - offsets;
 
@@ -40,10 +40,10 @@ function exportGaitToPWM(gait, filename)
     end
 
     % === Step 5: Map to PWM ===
-    pwm_min = 450;
-    pwm_max = 2450;
+    %pwm_min = 450;
+    %pwm_max = 2450;
 
-    pwm = pwm_min + (joint_deg / 180) * (pwm_max - pwm_min);
+    %pwm = pwm_min + (joint_deg / 180) * (pwm_max - pwm_min);
 
     % === Step 6: Compute Delay Column ===
     % Compute max angle change between consecutive rows
@@ -57,12 +57,12 @@ function exportGaitToPWM(gait, filename)
     delay_ms = [delay_ms; delay_ms(end)];
 
     % === Step 7: Append delay as 13th column ===
-    pwm_with_delay = [round(pwm), round(delay_ms)];
+    angle_with_delay = [joint_deg, round(delay_ms)];
 
     % === Step 8: Export to CSV ===
-    writematrix(pwm_with_delay, filename);
+    writematrix(angle_with_delay, filename);
 
-    fprintf("✅ Gait exported to PWM CSV with delays: %s\n", filename);
+    fprintf(" Gait exported to PWM CSV with delays: %s\n", filename);
 end
 
 % example usage:

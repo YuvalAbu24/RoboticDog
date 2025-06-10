@@ -9,21 +9,22 @@ class PWMDriver:
 
         # Set PWM pulse width range for all 12 joints (channels 0–11)
         for ch in range(12):
-            self.kit.servo[ch].set_pulse_width_range(min_pulse=450, max_pulse=2450)
+            self.kit.servo[ch].set_pulse_width_range(min_pulse=500, max_pulse=2500)
 
-    def set_pwm_batch(self, pwm_values):
+    def set_pwm_batch(self, angle_values):
         """
         Send a list of 12 PWM values to servos (in microseconds).
-        :param pwm_values: list of 12 values (range 450 – 2450)
+        :param angle_values: list of 12 values (range 500 – 2500)
         """
-        if len(pwm_values) != 12:
+        if len(angle_values) != 12:
             raise ValueError("Expected 12 PWM values.")
 
-        for ch, pwm_us in enumerate(pwm_values):
-            pwm_us = max(450, min(2450, pwm_us))  # Clamp just in case
-            self.kit.servo[ch].pulse_width = pwm_us
+        for ch, angle in enumerate(angle_values):
+            angle = max(0, min(180, angle)) 
+            print(f"channel {ch}: angle= {angle}") # Clamp just in case
+            self.kit.servo[ch].angle = angle
 
     def shutdown(self):
         """ Disable all active signals to servos (set to None) """
         for ch in range(12):
-            self.kit.servo[ch].pulse_width = None
+            self.kit.servo[ch].angle = None
