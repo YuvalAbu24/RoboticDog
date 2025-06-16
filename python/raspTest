@@ -1,6 +1,40 @@
 from adafruit_servokit import ServoKit
 kit= ServoKit(channels=16, address=0x41)
-for ch in range(2):
+for ch in range(10):
     kit.servo[ch].set_pulse_width_range(min_pulse=500, max_pulse=2500)
-kit.servo[ch].angle = 90
-print(f"channel {ch}: angle= {kit.servo[ch].angle}")  # Print the angle for verification
+angle0=0
+angle1=0
+angle2=0
+angle3=0
+angle4=0
+angle5=0
+angle6=0
+angle7=0
+angle8=0
+angle9=0
+angle10=0
+angle11=0
+kit.servo[0].angle = angle0
+print(f"channel 0: angle= {kit.servo[0].angle}")  # Print the angle for verification
+kit.servo[1].angle = angle1
+print(f"channel 1: angle= {kit.servo[1].angle}")  # Print the angle for verification
+kit.servo[2].angle = angle2
+print(f"channel 2: angle= {kit.servo[2].angle}")  # Print the angle for verification
+kit.servo[3].angle = angle3
+print(f"channel 3: angle= {kit.servo[3].angle}")  # Print the angle for verification
+kit.servo[4].angle = angle4
+print(f"channel 4: angle= {kit.servo[4].angle}")  # Print the angle for verification
+kit.servo[5].angle = angle5
+print(f"channel 5: angle= {kit.servo[5].angle}")  # Print the angle for verification    
+kit.servo[6].angle = angle6
+print(f"channel 6: angle= {kit.servo[6].angle}")  # Print the angle for verification
+kit.servo[7].angle = angle7
+print(f"channel 7: angle= {kit.servo[7].angle}")  # Print the angle for verification
+kit.servo[8].angle = angle8
+print(f"channel 8: angle= {kit.servo[8].angle}")  # Print the angle for verification
+kit.servo[9].angle = angle9
+print(f"channel 9: angle= {kit.servo[9].angle}")  # Print the angle for verification
+kit.servo[10].angle = angle10
+print(f"channel 10: angle= {kit.servo[10].angle}")  # Print the angle for verification  
+kit.servo[11].angle = angle11
+print(f"channel 11: angle= {kit.servo[11].angle}")  # Print the angle for verification
