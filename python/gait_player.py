@@ -30,5 +30,5 @@ class GaitPlayer:
                     break
 
         except KeyboardInterrupt:
-            print("⏹ Gait playback interrupted by user.")
+            print(" Gait playback interrupted by user.")
             self.driver.shutdown()

@@ -20,8 +20,8 @@ class PWMDriver:
             raise ValueError("Expected 12 PWM values.")
 
         for ch, angle in enumerate(angle_values):
-            angle = max(0, min(180, angle)) 
-            print(f"channel {ch}: angle= {angle}") # Clamp just in case
+            angle = max(0, min(180, angle))  # Clamp just in case
+            print(f"channel {ch}: angle= {angle}")
             self.kit.servo[ch].angle = angle
 
     def shutdown(self):

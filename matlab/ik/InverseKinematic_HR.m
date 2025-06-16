@@ -90,19 +90,76 @@ a5_2=125*sin(theta4_2);
 
 
 theta3_1_1=(atan2(b5_1,a5_2)+atan2(-sqrt(a5_2^2+b5_1^2-c5^2),c5)); % knee inward position - preffered
-disp('theta theta3_1_1 is:')
-disp(rad2deg(theta3_1_1))
+% disp('theta theta3_1_1 is:')
+% disp(rad2deg(theta3_1_1))
 theta3_1_2=atan2(b5_1,a5_1)+atan2(-sqrt(a5_1^2+b5_1^2-c5^2),c5); % knee backward position 
-disp('theta theta3_1_2 is:')
-disp(rad2deg(theta3_1_2))
+% disp('theta theta3_1_2 is:')
+% disp(rad2deg(theta3_1_2))
 
 theta3_2_1=atan2(b5_2,a5_2)+atan2(sqrt(a5_2^2+b5_2^2-c5^2),c5);  % knee backward position - outside leg plain
-disp('theta theta3_2_1 is:')
-disp(rad2deg(theta3_2_1))
+% disp('theta theta3_2_1 is:')
+% disp(rad2deg(theta3_2_1))
 theta3_2_2=(atan2(b5_2,a5_1)+atan2(sqrt(a5_1^2+b5_2^2-c5^2),c5)); % knee inward position - OUTSIDE leg plain
-disp('theta theta3_2_2 is:')
-disp(rad2deg(theta3_2_2))
+% disp('theta theta3_2_2 is:')
+% disp(rad2deg(theta3_2_2))
 
+
+% making sure all values between -pi -> pi
+if theta2_1 > pi
+    theta2_1=theta2_1-(2*pi);
+end
+if theta2_1< -pi
+    theta2_1=theta2_1+(2*pi);
+end
+
+if theta3_1_1 > pi
+    theta3_1_1=theta3_1_1-(2*pi);
+end
+if theta3_1_1< -pi
+    theta3_1_1=theta3_1_1+(2*pi);
+end
+
+if theta4_2 > pi
+    theta4_2=theta4_2-(2*pi);
+end
+if theta4_2< -pi
+    theta4_2=theta4_2+(2*pi);
+end
+
+if theta3_1_2 > pi
+    theta3_1_2=theta3_1_2-(2*pi);
+end
+if theta3_1_2< -pi
+    theta3_1_2=theta3_1_2+(2*pi);
+end
+
+if theta4_1 > pi
+    theta4_1=theta4_1-(2*pi);
+end
+if theta4_1< -pi
+    theta4_1=theta4_1+(2*pi);
+end
+
+if theta2_2 > pi
+    theta2_2=theta2_2-(2*pi);
+end
+if theta2_2< -pi
+    theta2_2=theta2_2+(2*pi);
+end
+
+if theta3_2_1 > pi
+    theta3_2_1=theta3_2_1-(2*pi);
+end
+if theta3_2_1< -pi
+    theta3_2_1=theta3_2_1+(2*pi);
+end
+
+if theta3_2_2 > pi
+    theta3_2_2=theta3_2_2-(2*pi);
+end
+if theta3_2_2< -pi
+    theta3_2_2=theta3_2_2+(2*pi);
+end
 
 %% Branches
 

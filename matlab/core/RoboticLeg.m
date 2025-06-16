@@ -58,7 +58,7 @@ classdef RoboticLeg
             elseif ~isLeft && isFront
                 obj.q_home = [-pi/2, pi/2, -pi/4,  pi/2 ];
             elseif isLeft && ~isFront
-                obj.q_home = [ pi/2, pi/2, -5*pi/4,  pi/2 ];
+                obj.q_home = [ pi/2, pi/2, 3*pi/4,  pi/2 ];
             else  % Right Hind
                 obj.q_home = [-pi/2, pi/2,  pi/4, -pi/2 ];
             end
