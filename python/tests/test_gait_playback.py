@@ -11,7 +11,7 @@ def play_pwm_gait(csv_file, loop=False):
     try:
         with open(csv_file, 'r') as f:
             reader = csv.reader(f)
-            rows = [list(map(int, row)) for row in reader]
+            rows = [list(map(float, row)) for row in reader]
 
         print(f" Loaded {len(rows)} rows from {csv_file}")
         

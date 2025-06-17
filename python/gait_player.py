@@ -1,4 +1,7 @@
-# gait_player.py
+# gait_player.py    
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import time
 import csv
 from pwm_driver import PWMDriver
@@ -13,7 +16,7 @@ class GaitPlayer:
         """
         with open(csv_path, 'r') as f:
             reader = csv.reader(f)
-            pwm_rows = [list(map(int, row)) for row in reader]
+            pwm_rows = [list(map(float, row)) for row in reader]
 
         print(f" Playing gait from {csv_path} with {len(pwm_rows)} steps")
 
