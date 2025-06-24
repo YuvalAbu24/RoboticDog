@@ -1,23 +1,23 @@
-# switch_test.py
-import RPi.GPIO as GPIO
+# switch_test.py (gpiozero version)
+from gpiozero import Button
+from signal import pause
 import time
 
-SWITCH_PIN = 16  # GPIO pin you're using
+SWITCH_PIN = 16  # BCM GPIO pin
+switch = Button(SWITCH_PIN, pull_up=True)
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(SWITCH_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+print(" Waiting for switch  (CTRL+C to exit)...")
 
-print(" Waiting for switch (CTRL+C to exit)...")
+def print_state():
+    if switch.is_pressed:
+        print(" Switch is CLOSED (resting)")
+    else:
+        print(" Switch is OPEN (pressed)")
 
 try:
     while True:
-        state = GPIO.input(SWITCH_PIN)
-        if state == GPIO.HIGH:
-            print(" Switch is OPEN (pressed)")
-        else:
-            print(" Switch is CLOSED (resting)")
+        print_state()
         time.sleep(0.2)
+
 except KeyboardInterrupt:
     print("\n Exiting.")
-finally:
-    GPIO.cleanup()

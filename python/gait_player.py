@@ -5,10 +5,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import time
 import csv
 from pwm_driver import PWMDriver
+from threading import Event
 
 class GaitPlayer:
     def __init__(self):
         self.driver = PWMDriver()
+        self.stop_event = Event()
+
+    def stop(self):
+        self.stop_event.set()
+        
 
     def play_gait(self, csv_path, loop=False):
         """
@@ -21,8 +27,11 @@ class GaitPlayer:
         print(f" Playing gait from {csv_path} with {len(pwm_rows)} steps")
 
         try:
-            while True:
+            while not self.stop_event.is_set():
                 for row in pwm_rows:
+                    if self.stop_event.is_set():
+                        print(" Gait stopped mid-play") 
+                        break   
                     pwm_values = row[:12]
                     delay_ms = row[12]
 
@@ -34,4 +43,5 @@ class GaitPlayer:
 
         except KeyboardInterrupt:
             print(" Gait playback interrupted by user.")
+        finally:
             self.driver.shutdown()
