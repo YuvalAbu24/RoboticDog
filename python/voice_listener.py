@@ -6,7 +6,7 @@ import json
 from threading import Thread, Lock
 
 # === Configuration ===
-MODEL_PATH = "home/user_admin/roboticDog/RoboticDog-main/python/models/vosk-model-small-en-us-0.15"
+MODEL_PATH = "/home/user_admin/roboticDog/RoboticDog-full/python/models/vosk-model-small-en-us-0.15"
 SAMPLE_RATE = 48000
 DEVICE_INDEX = 2  # Update with your mic device index
 KEYWORDS = {"sit", "stand", "walk", "stop", "lie down", "turn around", "full gait"}

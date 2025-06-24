@@ -29,6 +29,7 @@ class GaitPlayer:
         try:
             while not self.stop_event.is_set():
                 for row in pwm_rows:
+                    
                     if self.stop_event.is_set():
                         print(" Gait stopped mid-play")
                         return  # Exit early

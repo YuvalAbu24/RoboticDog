@@ -10,7 +10,7 @@ from full_gait_player import GaitPlayer
 from voice_listener import get_last_command, start_voice_listener
 
 # === PATH CONFIG ===
-GAIT_DIR = "/home/user_admin/roboticdog/RoboticDog-main/python/gaits/"
+GAIT_DIR = "/home/user_admin/roboticDog/RoboticDog-full/python/gaits/"
 
 # === GPIO ===
 SWITCH_PIN = 26
@@ -25,6 +25,7 @@ stop_event = Event()
 player = None
 gait_thread = None
 
+last_pose_state=None
 # === SWITCH CALLBACKS ===
 def on_switch_on():
     global state
@@ -56,9 +57,11 @@ def play_gait(file_name, on_finish_pose=None):
 
 def interrupt_current_gait():
     global player, gait_thread, command_ready, pose_state
+    """pose_state="standing" """# need to remember deleting this
     if player:
-        print(" Gait interrupted!")
+        
         player.stop()
+        print(" Gait interrupted!")
         if gait_thread:
             gait_thread.join(timeout=2)
         player = None
@@ -68,21 +71,24 @@ def interrupt_current_gait():
         print(" Returned to STANDING")
 
 def go_to_sitting():
+    global pose_state
     print(" Going to sitting...")
     """play_gait("stand_sit_gait.csv", on_finish_pose="sitting")"""
-    play_gait("full_mission_sequence.csv", on_finish_pose="sitting")
+    pose_state="sitting" #need to remember to delete this line
 def go_to_standing(from_pose):
+    global pose_state
     if from_pose == "sitting":
         """ gait_file = "sit_stand_gait.csv """
-        gait_file = "full_mission_sequence.csv"
+        print("go standing from sitting")
     elif from_pose == "lying":
         """gait_file = "lie_stand_gait.csv"""
-        gait_file = "full_mission_sequence.csv"
+        print("go standing from lying")
     else:
         print(" Invalid transition to stand")
         return
     print(" Going to standing...")
-    play_gait(gait_file, on_finish_pose="standing")
+    """play_gait(gait_file, on_finish_pose="standing")"""
+    pose_state="standing" #need to remember to delete this line
 
 # === SETUP ===
 def setup_switch():
@@ -94,7 +100,7 @@ def setup_switch():
 
 # === MAIN LOOP ===
 def main_loop():
-    global state, pose_state, command_ready
+    global state, pose_state, command_ready , last_pose_state , player, gait_thread
 
     switch = setup_switch()
     start_voice_listener()
@@ -112,15 +118,18 @@ def main_loop():
     try:
         while not stop_event.is_set():
             if state == "IDLE":
-                if pose_state != "sitting":
+                if player:
+                    interrupt_current_gait()
+                    
+                if pose_state != "sitting" and last_pose_state!="sitting":
                     go_to_sitting()
+                last_pose_state = pose_state
+                
                 time.sleep(1)
                 continue
 
             if state == "ACTIVE":
-                if not command_ready:
-                    time.sleep(0.5)
-                    continue
+                
 
                 command = get_last_command()
                 if not command:
@@ -129,44 +138,60 @@ def main_loop():
 
                 print(f" Command received: {command}")
 
-                if command == "stop":
+                if  command == "stop"  :
+                    
                     interrupt_current_gait()
-                    continue
+                    
+                if not command_ready:
+                    time.sleep(0.5)
+                    continue    
 
                 if command == "sit" and pose_state in ["standing", "lying"]:
                     if pose_state == "standing":
                         """play_gait("stand_sit_gait.csv", on_finish_pose="sitting")"""
-                        play_gait("full_mission_sequence.csv", on_finish_pose="sitting")
+                        print("stand_sit_gait")
+                        pose_state="sitting" #need to remember to delete this line
+
+                        
                     elif pose_state == "lying":
                         """play_gait("lie_sit_gait.csv", on_finish_pose="sitting")"""
-                        play_gait("full_mission_sequence.csv", on_finish_pose="sitting")
+                        print("lie_sit_gait")
+                        pose_state="sitting" #need to remember to delete this line
+
                 elif command == "lie down" and pose_state in ["sitting", "standing"]:
                     if pose_state == "sitting":
                         """play_gait("sit_lie_gait.csv", on_finish_pose="lying")"""
-                        play_gait("full_mission_sequence.csv", on_finish_pose="lying")
+                        print("sit_lie_gate")
+                        pose_state="lying" #need to remember to delete this line
                     elif pose_state == "standing":
                         """play_gait("stand_lie_gait.csv", on_finish_pose="lying")"""
-                        play_gait("full_mission_sequence.csv", on_finish_pose="lying")
+                        print("stand_lie_gate")
+                        pose_state="lying" #need to remember to delete this line
 
                 elif command == "stand" and pose_state in ["sitting", "lying"]:
                     go_to_standing(from_pose=pose_state)
 
                 elif command == "walk" and pose_state == "standing":
                     """play_gait("walk.csv", on_finish_pose="standing")"""
-                    play_gait("full_mission_sequence.csv", on_finish_pose="standing")
-                    pose_state = "walking"
+                    print("walking gait")
+                    
+                    pose_state="standing" #need to remember to delete this line
 
                 elif command == "turn around" and pose_state in ["standing", "walking"]:
                     """play_gait("turn.csv", on_finish_pose="standing")"""
-                    play_gait("full_mission_sequence.csv", on_finish_pose="standing")    
-                    pose_state = "turning"
+                    print("turn gait")  
+                    
+                    pose_state="standing" #need to remember to delete this line
 
                 elif command == "full gait" and pose_state == "standing":
                     play_gait("full_mission_sequence.csv", on_finish_pose="standing")
-                    pose_state = "running_full"
+                    print("full gate ")
+                    pose_state = "standing" #need to remember to delete this line
+                
 
                 else:
-                    print(f" Invalid command '{command}' from pose '{pose_state}'")
+                    if command!= "stop":
+                        print(f" Invalid command '{command}' from pose '{pose_state}'")
 
             time.sleep(0.1)
 
@@ -178,7 +203,7 @@ def main_loop():
 
     finally:
         switch.close()
-        print("🧹 GPIO cleaned up.")
+        print(" GPIO cleaned up.")
 
 # === ENTRY POINT ===
 if __name__ == "__main__":
