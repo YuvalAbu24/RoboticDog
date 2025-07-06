@@ -222,21 +222,21 @@ classdef RoboticLeg
                     %poses.standing = [134.3, -142, -176.8];
                     poses.standing = [116.452, -142, -204.009];
                     %poses.sitting  = [120.0, -142, -160.0];
-                    poses.sitting  = [103.603,  -142, -174.091];
+                    poses.sitting  = [103.603,  142, -174.091];
                     poses.lying    = [ 132.572, -142, -90.0];
 
                 case 'LH'
                     %poses.standing = [-134.3,  142, -176.8];
                     poses.standing = [-116.452,  142, -204.009];
                     %poses.sitting  = [-80.0,   142, -100];
-                    poses.sitting  = [-90.124,  142, -106.650];
+                    poses.sitting  = [-90.124,  142, -174.091];
                     poses.lying    = [-132.572,   142, -90.0];
 
                 case 'RH'
                     %poses.standing = [-134.3, -142, -176.8];
                     poses.standing = [-116.452, -142, -204.009];
                     %poses.sitting  = [-80.0,  -142, -100.0];
-                    poses.sitting  = [-90.124,  -142, -106.650];
+                    poses.sitting  = [103.603,  142, -174.091];
                     poses.lying    = [-132.572,  -142, -90.0];
             end
 

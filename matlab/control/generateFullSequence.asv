@@ -53,7 +53,7 @@ gait_exit = exitGait(robot, 2, 20);
 % gait_exit = appendHold(gait_exit, delay_ms, step_delay_ms);
 
 % === Part 7: Standing → Sitting → Lying
-gait_pose_end = runPoseSequence(robot, ["standing","sitting","lying"], 6, 20, false);
+gait_pose_end = runPoseSequence(robot, ["sitting","lying",], 6, 20, false);
 
 % gait_pose_end = appendHold(gait_pose_end, delay_ms, step_delay_ms);
 

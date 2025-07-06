@@ -102,62 +102,92 @@ disp('theta theta3_2_2 is:')
 disp(rad2deg(theta3_2_2))
 
 % making sure all values between -pi -> pi
-if theta2_1 > pi
-    theta2_1=theta2_1-(2*pi);
-end
-if theta2_1< -pi
-    theta2_1=theta2_1+(2*pi);
-end
-
-if theta3_1_1 > pi
-    theta3_1_1=theta3_1_1-(2*pi);
-end
-if theta3_1_1< -pi
-    theta3_1_1=theta3_1_1+(2*pi);
-end
-
-if theta4_2 > pi
-    theta4_2=theta4_2-(2*pi);
-end
-if theta4_2< -pi
-    theta4_2=theta4_2+(2*pi);
-end
-
-if theta3_1_2 > pi
-    theta3_1_2=theta3_1_2-(2*pi);
-end
-if theta3_1_2< -pi
-    theta3_1_2=theta3_1_2+(2*pi);
-end
-
-if theta4_1 > pi
-    theta4_1=theta4_1-(2*pi);
-end
-if theta4_1< -pi
-    theta4_1=theta4_1+(2*pi);
-end
-
-if theta2_2 > pi
-    theta2_2=theta2_2-(2*pi);
-end
-if theta2_2< -pi
-    theta2_2=theta2_2+(2*pi);
-end
-
-if theta3_2_1 > pi
-    theta3_2_1=theta3_2_1-(2*pi);
-end
-if theta3_2_1< -pi
-    theta3_2_1=theta3_2_1+(2*pi);
-end
-
-if theta3_2_2 > pi
-    theta3_2_2=theta3_2_2-(2*pi);
-end
-if theta3_2_2< -pi
-    theta3_2_2=theta3_2_2+(2*pi);
-end
-
+% % if theta2_1 > pi
+% %     theta2_1=theta2_1-(2*pi);
+% % end
+% % if theta2_1< -pi
+% %     theta2_1=theta2_1+(2*pi);
+% % end
+% % if theta2_1==-pi
+% %     theta2_1=pi;
+% % end
+% % 
+% % 
+% % if theta3_1_1 > pi
+% %     theta3_1_1=theta3_1_1-(2*pi);
+% % end
+% % if theta3_1_1< -pi
+% %     theta3_1_1=theta3_1_1+(2*pi);
+% % end
+% % if theta3_1_1==-pi
+% %     theta3_1_1=pi;
+% % end
+% % 
+% % 
+% % if theta4_2 > pi
+% %     theta4_2=theta4_2-(2*pi);
+% % end
+% % if theta4_2< -pi
+% %     theta4_2=theta4_2+(2*pi);
+% % end
+% % if theta4_2==-pi
+% %     theta4_2=pi;
+% % end
+% % 
+% % 
+% % if theta3_1_2 > pi
+% %     theta3_1_2=theta3_1_2-(2*pi);
+% % end
+% % if theta3_1_2< -pi
+% %     theta3_1_2=theta3_1_2+(2*pi);
+% % end
+% % if theta3_1_2 ==-pi
+% %     theta3_1_2=pi;
+% % end  
+% % 
+% % 
+% % if theta4_1 > pi
+% %     theta4_1=theta4_1-(2*pi);
+% % end
+% % if theta4_1< -pi
+% %     theta4_1=theta4_1+(2*pi);
+% % end
+% % if theta4_1==-pi
+% %     theta4_1=pi;
+% % end
+% % 
+% % 
+% % if theta2_2 > pi
+% %     theta2_2=theta2_2-(2*pi);
+% % end
+% % if theta2_2< -pi
+% %     theta2_2=theta2_2+(2*pi);
+% % end
+% % if theta2_2==-pi
+% %     theta2_2=pi;
+% % end
+% % 
+% % 
+% % if theta3_2_1 > pi
+% %     theta3_2_1=theta3_2_1-(2*pi);
+% % end
+% % if theta3_2_1< -pi
+% %     theta3_2_1=theta3_2_1+(2*pi);
+% % end
+% % if theta3_2_1==-pi
+% %     theta3_2_1=pi;
+% % end
+% % 
+% % 
+% % if theta3_2_2 > pi
+% %     theta3_2_2=theta3_2_2-(2*pi);
+% % end
+% % if theta3_2_2< -pi
+% %     theta3_2_2=theta3_2_2+(2*pi);
+% % end
+% % if theta3_2_2==-pi
+% %     theta3_2_2=pi;
+% % end
 %% Branches
 
 disp('first branch')

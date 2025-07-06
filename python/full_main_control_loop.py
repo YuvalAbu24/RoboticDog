@@ -57,7 +57,7 @@ def play_gait(file_name, on_finish_pose=None):
 
 def interrupt_current_gait():
     global player, gait_thread, command_ready, pose_state
-    """pose_state="standing" """# need to remember deleting this
+    
     if player:
         
         player.stop()
@@ -66,6 +66,7 @@ def interrupt_current_gait():
             gait_thread.join(timeout=2)
         player = None
         gait_thread = None
+        play_gait("final_enter_stand_gait.csv", on_finish_pose="standing")
         pose_state = "standing"
         command_ready = True
         print(" Returned to STANDING")
@@ -73,22 +74,22 @@ def interrupt_current_gait():
 def go_to_sitting():
     global pose_state
     print(" Going to sitting...")
-    """play_gait("stand_sit_gait.csv", on_finish_pose="sitting")"""
-    pose_state="sitting" #need to remember to delete this line
+    play_gait("final_stand_sit_gait.csv", on_finish_pose="sitting")
+    #pose_state="sitting" #need to remember to delete this line
 def go_to_standing(from_pose):
     global pose_state
     if from_pose == "sitting":
-        """ gait_file = "sit_stand_gait.csv """
+        gait_file = "final_sit_stand_gait.csv"
         print("go standing from sitting")
     elif from_pose == "lying":
-        """gait_file = "lie_stand_gait.csv"""
+        gait_file = "final_lie_stand_gait.csv"
         print("go standing from lying")
     else:
         print(" Invalid transition to stand")
         return
     print(" Going to standing...")
-    """play_gait(gait_file, on_finish_pose="standing")"""
-    pose_state="standing" #need to remember to delete this line
+    play_gait(gait_file, on_finish_pose="standing")
+    #pose_state="standing" #need to remember to delete this line
 
 # === SETUP ===
 def setup_switch():
@@ -112,7 +113,9 @@ def main_loop():
         go_to_sitting()
     else:
         state = "ACTIVE"
-        pose_state = "standing"
+
+        pose_state = "sitting"
+        go_to_standing(from_pose="sitting")
         print(" ACTIVE mode: waiting for commands")
 
     try:
@@ -138,61 +141,61 @@ def main_loop():
 
                 print(f" Command received: {command}")
 
-                if  command == "stop"  :
-                    
+                if  command == "stop"  : 
+                    #check this change. it was only interrupt.
                     interrupt_current_gait()
-                    
+                    play_gait("final_enter_stand_gait.csv", on_finish_pose="standing")
+                    interrupt_current_gait()
+
                 if not command_ready:
                     time.sleep(0.5)
                     continue    
 
                 if command == "sit" and pose_state in ["standing", "lying"]:
                     if pose_state == "standing":
-                        """play_gait("stand_sit_gait.csv", on_finish_pose="sitting")"""
+                        play_gait("final_stand_sit_gait.csv", on_finish_pose="sitting")
                         print("stand_sit_gait")
-                        pose_state="sitting" #need to remember to delete this line
+                        #pose_state="sitting" #need to remember to delete this line
 
                         
                     elif pose_state == "lying":
-                        """play_gait("lie_sit_gait.csv", on_finish_pose="sitting")"""
+                        play_gait("final_lie_sit_gait.csv", on_finish_pose="sitting")
                         print("lie_sit_gait")
-                        pose_state="sitting" #need to remember to delete this line
+                        #pose_state="sitting" #need to remember to delete this line
 
                 elif command == "lie down" and pose_state in ["sitting", "standing"]:
                     if pose_state == "sitting":
-                        """play_gait("sit_lie_gait.csv", on_finish_pose="lying")"""
+                        play_gait("final_sit_lie_gait.csv", on_finish_pose="lying")
                         print("sit_lie_gate")
-                        pose_state="lying" #need to remember to delete this line
+                        #pose_state="lying" #need to remember to delete this line
                     elif pose_state == "standing":
-                        """play_gait("stand_lie_gait.csv", on_finish_pose="lying")"""
+                        play_gait("final_stand_lie_gait.csv", on_finish_pose="lying")
                         print("stand_lie_gate")
-                        pose_state="lying" #need to remember to delete this line
+                        #pose_state="lying" #need to remember to delete this line
 
                 elif command == "stand" and pose_state in ["sitting", "lying"]:
                     go_to_standing(from_pose=pose_state)
 
                 elif command == "walk" and pose_state == "standing":
-                    """play_gait("walk.csv", on_finish_pose="standing")"""
+                    play_gait("final_walking_sequence.csv", on_finish_pose="standing")
                     print("walking gait")
-                    
-                    pose_state="standing" #need to remember to delete this line
+                    #pose_state="standing" #need to remember to delete this line
 
                 elif command == "turn around" and pose_state in ["standing", "walking"]:
-                    """play_gait("turn.csv", on_finish_pose="standing")"""
-                    print("turn gait")  
-                    
-                    pose_state="standing" #need to remember to delete this line
+                    play_gait("final_turning_sequence.csv", on_finish_pose="standing")
+                    print("turn gait")
+                    #pose_state="standing" #need to remember to delete this line
 
                 elif command == "full gait" and pose_state == "standing":
-                    play_gait("full_mission_sequence.csv", on_finish_pose="standing")
-                    print("full gate ")
-                    pose_state = "standing" #need to remember to delete this line
+                    play_gait("final_full_mission_sequence.csv", on_finish_pose="standing")
+                    print("full gait")
+                    #pose_state = "standing" #need to remember to delete this line
                 
 
                 else:
                     if command!= "stop":
                         print(f" Invalid command '{command}' from pose '{pose_state}'")
-
+            print(f" STATE → mode: {state}, pose: {pose_state}, ready: {command_ready}")
             time.sleep(0.1)
 
     except KeyboardInterrupt:
