@@ -4,7 +4,7 @@ clear; clc;
 
 %% setup and plot all legs
 dog = QuadrupedRobot();
-dog.teachAll();
+%dog.teachAll();
 
 %% not working together
 

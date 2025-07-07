@@ -17,43 +17,44 @@ stride = 80; step_height = 30;
 % === Part 1: Transitions ===
 gait_pose = struct();
 poses = [ "lying","sitting", "standing"];
-gait_pose_seq = runPoseSequence(robot, poses, 6, 20, false);  % returns gait struct
+
+gait_pose_seq = runPoseSequence(robot, poses, 6, 5, false);  % returns gait struct
 
 % gait_pose_seq = appendHold(gait_pose_seq);
 
 % === Part 2: Enter Gait ===
-gait_enter = enterGait(robot, 2, 20);  % returns gait struct
+gait_enter = enterGait(robot, 2, 5);  % returns gait struct
 % gait_enter = appendHold(gait_enter);
 
 % === Part 3: Walk Forward 2m ===
 
-gait_walk1 = walkFixedDistance(robot, 'trot', stride, step_height, 2000, 30);
+gait_walk1 = walkFixedDistance(robot, 'trot', stride, step_height, 2000, 16);
 % gait_walk1 = appendHold(gait_walk1, delay_ms, step_delay_ms);
 
-%gait_enter1 = enterGait(robot, 2, 20);
+gait_enter1 = enterGait(robot, 2, 5);
 % === Part 4: Turn 180 (curved) ===
 pivotDist = 400;
 total_deg = 180;
 chunk_deg = 10;
 
 gait_turn = generateCurvedWalkingGait_Option2_bodyBased(robot, pivotDist, ...
-              total_deg, chunk_deg, stride, step_height, 'left', 30);
+              total_deg, chunk_deg, stride, step_height, 'left', 10);
 % gait_turn = appendHold(gait_turn, delay_ms, step_delay_ms);
 %==== enter ====
 
-gait_enter2 = enterGait(robot, 2, 20);
+gait_enter2 = enterGait(robot, 2, 5);
 
 % === Part 5: Walk Forward Again 2m ===
-gait_walk2 = walkFixedDistance(robot, 'trot', stride, step_height, 2000, 30);
+gait_walk2 = walkFixedDistance(robot, 'trot', stride, step_height, 2000, 16);
 
 % gait_walk2 = appendHold(gait_walk2, delay_ms, step_delay_ms);
 
 % === Part 6: Exit → Standing Pose
-gait_exit = exitGait(robot, 2, 20);
+gait_exit = exitGait(robot, 2, 5);
 % gait_exit = appendHold(gait_exit, delay_ms, step_delay_ms);
 
 % === Part 7: Standing → Sitting → Lying
-gait_pose_end = runPoseSequence(robot, ["standing","sitting","lying"], 6, 20, false);
+gait_pose_end = runPoseSequence(robot, ["standing","sitting","lying"], 6, 5, false);
 
 % gait_pose_end = appendHold(gait_pose_end, delay_ms, step_delay_ms);
 
@@ -76,4 +77,5 @@ for i = 1:numel(legs)
 end
 
 % === Export CSV ===
-exportGaitToPWM(gait_total, 'final_full_gait.csv');
+exportGaitToPWM(gait_total, 'final_full_gait_auto.csv');
+%
