@@ -1,0 +1,23 @@
+function pos = planFootTrajectory(phase, strideLength, stepHeight, leg)
+    % Generates 3D foot trajectory point in body frame
+    % Inputs:
+    %   - phase: float [0, 1)
+    %   - strideLength: mm (total foot travel in X)
+    %   - stepHeight: mm (lift above neutral Z)
+    %   - leg: RoboticLeg object with .neutralPos
+
+    phase = mod(phase, 1.0);
+
+    if phase < 0.5
+        % Swing phase (foot rises)
+        x = -strideLength/2 + strideLength * (phase / 0.5);
+        z_offset = stepHeight * (1 - (2 * phase - 1)^2);  % Parabola: max at phase=0.25
+    else
+        % Stance phase (foot on ground)
+        x =  strideLength/2 - strideLength * ((phase - 0.5) / 0.5);
+        z_offset = 0;
+    end
+
+    neutral = leg.neutralPos;
+    pos = [neutral(1) + x, neutral(2), neutral(3) + z_offset];
+end

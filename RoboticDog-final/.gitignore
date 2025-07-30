@@ -1,0 +1,18 @@
+# OS / Editor trash
+.DS_Store
+*.rtf
+*.log
+*.m~
+
+# MATLAB cache
+matlab/.DS_Store
+
+# Video files
+*.mp4
+*.avi
+
+# Python cache
+__pycache__/
+*.pyc
+
+
